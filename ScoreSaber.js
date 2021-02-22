@@ -1,6 +1,3 @@
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
-// icon-color: yellow; icon-glyph: window-restore;
 let user_id = args.widgetParameter;
 
 const api_url = "https://new.scoresaber.com"
@@ -178,6 +175,8 @@ function createWidget() {
   
   const rankRect = new Rect(graphRect.x, graphRect.y - 40, graphRect.width, 30);
   drawTextR("Rank Over the Past " + (history.length + 1) + " Days", rankRect, Color.white(), Font.boldRoundedSystemFont(24));
+  
+  history.push(res.playerInfo.rank)
   
   // Graph
   for(let i = 0; i < history.length; i++) {
