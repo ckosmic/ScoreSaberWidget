@@ -3,10 +3,16 @@
 // icon-color: yellow; icon-glyph: window-restore;
 let user_id = args.widgetParameter;
 
-if(user_id == null)  
-  user_id = "76561198131208517"
-
 const api_url = "https://new.scoresaber.com"
+
+// If user ID is not provided, grab player #1's user ID
+if(user_id == null || user_id == "" || user_id == undefined) {
+  const req = new Request(api_url + "/api/players")  
+  const res = await req.loadJSON()
+  
+  user_id = res.players[0].playerId
+}
+
 const url = api_url + "/api/player/" + user_id + "/full"
 
 const ySegments = 4
