@@ -9,6 +9,7 @@ if(user_id == null || user_id == "" || user_id == undefined) {
   
   user_id = res.players[0].playerId
 }
+// user_id = "76561198131208517"
 
 const url = api_url + "/api/player/" + user_id + "/full"
 
@@ -103,7 +104,8 @@ function createWidget() {
   
   w.addSpacer(null)
   
-  let history = res.playerInfo.history.split(",")
+  let history = res.playerInfo.history.split(",")  
+  history.push(res.playerInfo.rank)
   let min = Infinity
   let max = 0
   
@@ -114,11 +116,12 @@ function createWidget() {
   }
   
   let base = 100000
-  if(min > 0 && min <= 10) base = 1
-  else if(min > 10 && min <= 100) base = 10
-  else if(min > 100 && min <= 1000) base = 100
-  else if(min > 1000 && min <= 10000) base = 1000
-  else if(min > 10000 && min <= 100000) base = 10000
+  let cmp = min
+  if(cmp > 0 && cmp <= 10) base = 1
+  else if(cmp > 10 && cmp <= 100) base = 10
+  else if(cmp > 100 && cmp <= 1000) base = 100
+  else if(cmp > 1000 && cmp <= 10000) base = 1000
+  else if(cmp > 10000 && cmp <= 100000) base = 10000
   
   min = Math.floor(min / base) * base
   max = Math.ceil(max / base) * base
@@ -138,7 +141,7 @@ function createWidget() {
   // Y axis lines (rank range)
   let index = 0
   let y = 0
-  while(y < max) {
+  while(y  < max) {
     y = min + index * steps
     
     if(y % 1 == 0) {
@@ -174,9 +177,9 @@ function createWidget() {
   }
   
   const rankRect = new Rect(graphRect.x, graphRect.y - 40, graphRect.width, 30);
-  drawTextR("Rank Over the Past " + (history.length + 1) + " Days", rankRect, Color.white(), Font.boldRoundedSystemFont(24));
+  drawTextR("Rank Over the Past " + history.length + " Days", rankRect, Color.white(), Font.boldRoundedSystemFont(24));
   
-  history.push(res.playerInfo.rank)
+  
   
   // Graph
   for(let i = 0; i < history.length; i++) {
