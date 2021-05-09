@@ -49,6 +49,7 @@ Script.complete()
 
 function createWidget() {
   let w = new ListWidget()
+  w.backgroundColor = new Color("#000000", 1)
   
   let headerStack = w.addStack()
   headerStack.centerAlignContent()
