@@ -7,7 +7,7 @@ if(user_id == null || user_id == "" || user_id == undefined) {
   const req = new Request(api_url + "/api/players")  
   const res = await req.loadJSON()
   
-  user_id = res[0].id
+  user_id = res.players[0].id
 }
 // user_id = "76561198131208517"
 
