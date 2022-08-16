@@ -3,7 +3,7 @@ let user_id = args.widgetParameter;
 const api_url = "https://scoresaber.com"
 
 // If user ID is not provided, grab player #1's user ID
-if(user_id == null || user_id == "" || user_id == undefined) {
+if(user_id == null || user_id === "" || user_id === undefined) {
   const req = new Request(api_url + "/api/players")  
   const res = await req.loadJSON()
   
@@ -84,11 +84,11 @@ function createWidget() {
   let headerStack = w.addStack()
   headerStack.centerAlignContent()
   headerStack.url = "https://scoresaber.com/u/" + user_id
-  if(widgetSize == "small")
+  if(widgetSize === "small")
     headerStack.addSpacer(null)
   
   let image = headerStack.addImage(avatarImg)
-  if(widgetSize == "small") {
+  if(widgetSize === "small") {
     image.imageSize = new Size(50, 50)
     image.cornerRadius = 25
     headerStack.addSpacer(null)
@@ -98,8 +98,8 @@ function createWidget() {
     headerStack.addSpacer(6)
   }
   
-  let titleElement = null
-  if(widgetSize == "small") {
+  let titleElement
+  if(widgetSize === "small") {
     titleElement = w.addText(res.name)
     titleElement.centerAlignText()
   } else {
@@ -110,7 +110,7 @@ function createWidget() {
   titleElement.font = Font.boldRoundedSystemFont(18)
   titleElement.lineLimit = 1
   
-  if(widgetSize == "big") {
+  if(widgetSize === "big") {
     let ssElement = headerStack.addText(" - ScoreSaber")
     ssElement.textColor = Color.white()
     ssElement.textOpacity = 0.7
@@ -121,7 +121,7 @@ function createWidget() {
   w.addSpacer(10)
   
   let rankStack = w.addStack()
-  if(widgetSize == "small")
+  if(widgetSize === "small")
   rankStack.addSpacer(null)
   rankStack.centerAlignContent()
   let rankElement = rankStack.addText(`${locales["ranking_"+widgetSize]}${formatNumber(res.rank)} (${flagEmoji} #${formatNumber(res.countryRank)})`)
@@ -132,7 +132,7 @@ function createWidget() {
   ppElement.textColor = Color.white()
   ppElement.font = Font.lightRoundedSystemFont(12)
 
-  if(widgetSize == "small") {
+  if(widgetSize === "small") {
     ppElement.centerAlignText()
     rankStack.addSpacer(null)
   } else {
@@ -148,7 +148,7 @@ function createWidget() {
   let accElement = w.addText(locales["acc_"+widgetSize] + Math.ceil(res.scoreStats.averageRankedAccuracy * 100) / 100 + "%")
   accElement.textColor = Color.white()
   accElement.font = Font.lightRoundedSystemFont(12)
-  if(widgetSize == "small") 
+  if(widgetSize === "small")
     accElement.centerAlignText()
 
   // Badges
@@ -159,14 +159,14 @@ function createWidget() {
     const p = new Point(badgeX, badgeY)
     context.drawImageAtPoint(badges[i], p)
     badgeY += 40
-    if((i + 1) % 5 == 0) {
+    if((i + 1) % 5 === 0) {
       badgeX += 100
       badgeY = 100
     }
-    if(i == 9) break;
+    if(i === 9) break;
   }
   
-  if(config.widgetFamily == "large" || config.widgetFamily == null) {
+  if(config.widgetFamily === "large" || config.widgetFamily == null) {
   
     w.addSpacer(null)
   
@@ -191,8 +191,8 @@ function createWidget() {
   
     min = Math.floor(min / base) * base
     max = Math.ceil(max / base) * base
-    if(min == 1) min = 0
-    if(max == 1) max = 2
+    if(min === 1) min = 0
+    if(max === 1) max = 2
   
     // Axis lines
     let p1 = new Point(graphRect.minX, graphRect.minY);    
@@ -210,7 +210,7 @@ function createWidget() {
     while(y  < max) {
       y = min + index * steps
     
-      if(y % 1 == 0) {
+      if(y % 1 === 0) {
         let lineY = lerp(graphRect.minY, graphRect.maxY, percent(y, min, max))
         p1 = new Point(graphRect.minX, lineY)
         p2 = new Point(graphRect.maxX, lineY)
@@ -237,8 +237,8 @@ function createWidget() {
     
       context.setTextAlignedCenter()
       const rankRect = new Rect(lineX-50, graphRect.y+320, 100, 23);  
-      let text = (history.length - Math.floor(x)) + ""  
-      if(text == 0) text = "now"
+      let text = (history.length - Math.floor(x))
+      if(text === 0) text = "now"
 	  drawTextR(text, rankRect, Color.gray(), Font.boldRoundedSystemFont(19));
     }
   
@@ -262,7 +262,7 @@ function createWidget() {
 }
 
 async function getBadges() {
-  let badges = new Array()
+  let badges = []
   for(let i = 0; i < res.badges.length; i++) {
     const badge = res.badges[i].image
     const j = await new Request(badge)  
@@ -279,7 +279,7 @@ function kFormatter(num){
 function drawTextR(text, rect, color, font){
 	context.setFont(font);
 	context.setTextColor(color);
-	context.drawTextInRect(new String(text).toString(), rect);
+	context.drawTextInRect(String(text).toString(), rect);
 }
 
 function drawLine(a, b, width, color) {
