@@ -22,9 +22,8 @@ const avatar = res.profilePicture
 const avatar_i = await new Request(avatar)
 const avatarImg = await avatar_i.loadImage()
 
-const flag = "https://scoresaber.com/imports/images/flags/" + res.country.toLowerCase() + ".png"
-const flag_i = await new Request(flag)
-const flagImg = await flag_i.loadImage()
+const toEmojiFlag = (countryCode) => countryCode.toLowerCase().replace(/[a-z]/g, (i) => String.fromCodePoint((i.codePointAt(0) ?? 0) - 97 + 0x1f1e6));
+const flagEmoji = toEmojiFlag(res.country)
 
 
 
@@ -125,16 +124,9 @@ function createWidget() {
   if(widgetSize == "small")
   rankStack.addSpacer(null)
   rankStack.centerAlignContent()
-  let rankElement = rankStack.addText(locales["ranking_"+widgetSize] + formatNumber(res.rank) + " (" )
+  let rankElement = rankStack.addText(`${locales["ranking_"+widgetSize]}${formatNumber(res.rank)} (${flagEmoji} #${formatNumber(res.countryRank)})`)
   rankElement.textColor = Color.white()
   rankElement.font = Font.lightRoundedSystemFont(12)
-  
-  image = rankStack.addImage(flagImg)
-  image.imageSize = new Size(14, 9)
-  
-  let countryRankElement = rankStack.addText(" - #" + formatNumber(res.countryRank) + ")" )
-  countryRankElement.textColor = Color.white()
-  countryRankElement.font = Font.lightRoundedSystemFont(12)
   
   let ppElement = w.addText(locales["pp_"+widgetSize] + formatNumber(res.pp) + "pp")
   ppElement.textColor = Color.white()
